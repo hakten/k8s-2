@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  labels:
+  name: task-2a-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: task-2a
+  template:
+    metadata:
+      labels:
+        app: task-2a
+    spec:
+      containers:
+      - image: nginx
+        name: task-2a-nginx-cont
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: k8-service
+spec:
+  selector:
+    app: task-2a
+  ports:
+  - name: web
+    port: 81
+    targetPort: 80
+    protocol: TCP
+  type: NodePort

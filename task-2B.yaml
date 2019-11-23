@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginx-test
+spec:
+  replicas: 2
+  selector:
+    app: nginx-test
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.9.10
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: nginx-svc
+spec:
+  selector:
+    app: nginx-test
+  ports:
+  - name: web
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  type: NodePort
